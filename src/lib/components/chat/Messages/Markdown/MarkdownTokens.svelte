@@ -200,6 +200,16 @@
 				<svelte:self id={`${id}-${tokenIdx}-d`} tokens={marked.lexer(token.text)} />
 			</div>
 		</Collapsible>
+	{:else if token.type === 'think'}
+		<Collapsible 
+			title={$i18n.t('Thinking...')} 
+			attributes={{ type: 'reasoning', done: 'true' }} 
+			className="w-full space-y-1"
+		>
+			<div class="mb-1.5" slot="content">
+				<svelte:self id={`${id}-${tokenIdx}-t`} tokens={token.tokens} />
+			</div>
+		</Collapsible>
 	{:else if token.type === 'html'}
 		{@const html = DOMPurify.sanitize(token.text)}
 		{#if html && html.includes('<video')}

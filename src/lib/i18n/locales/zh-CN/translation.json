@@ -1,5 +1,7 @@
 {
-	"-1 for no limit, or a positive integer for a specific limit": "-1 表示无限制，正整数表示具体限制”",
+	"Thinking...": "思考中...",
+	"Thought for {{DURATION}}": "思考用时 {{DURATION}}",
+	"-1 for no limit, or a positive integer for a specific limit": "-1 表示无限制，正整数表示具体限制"",
 	"'s', 'm', 'h', 'd', 'w' or '-1' for no expiration.": "'s', 'm', 'h', 'd', 'w' 或 '-1' 表示无过期时间。",
 	"(e.g. `sh webui.sh --api --api-auth username_password`)": "（例如 `sh webui.sh --api --api-auth username_password`）",
 	"(e.g. `sh webui.sh --api`)": "（例如 `sh webui.sh --api`）",
