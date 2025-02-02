@@ -3,9 +3,9 @@ function findMatchingClosingTag(src: string, openTag: string, closeTag: string):
 	let depth = 1;
 	let index = openTag.length;
 	while (depth > 0 && index < src.length) {
-		if (src.startsWith(openTag, index)) {
+		if (src.indexOf(openTag, index) === index) {
 			depth++;
-		} else if (src.startsWith(closeTag, index)) {
+		} else if (src.indexOf(closeTag, index) === index) {
 			depth--;
 		}
 		if (depth > 0) {
@@ -65,8 +65,8 @@ function detailsStart(src: string) {
 
 function detailsRenderer(token: any) {
 	const attributesString = token.attributes
-		? Object.entries(token.attributes)
-				.map(([key, value]) => `${key}="${value}"`)
+		? Object.keys(token.attributes)
+				.map((key) => `${key}="${token.attributes[key]}"`)
 				.join(' ')
 		: '';
 
@@ -87,8 +87,47 @@ function detailsExtension() {
 	};
 }
 
-export default function (options = {}) {
+interface TokenizerThis {
+    lexer: {
+        blockTokens(text: string): any[];
+    };
+}
+
+function thinkTokenizer(this: TokenizerThis, src: string) {
+	const thinkRegex = /^<think>([\s\S]*?)<\/think>/;
+	const match = thinkRegex.exec(src);
+	if (match) {
+		const fullMatch = match[0];
+		const content = match[1].trim();
+		return {
+			type: 'think',
+			raw: fullMatch,
+			text: content,
+			tokens: this.lexer.blockTokens(content)
+		};
+	}
+}
+
+function thinkStart(src: string) {
+	return src.indexOf('<think>') === 0 ? 0 : -1;
+}
+
+function thinkRenderer(token: any) {
+	return `<think>${token.text}</think>`;
+}
+
+function thinkExtension() {
 	return {
-		extensions: [detailsExtension(options)]
+		name: 'think',
+		level: 'block',
+		start: thinkStart,
+		tokenizer: thinkTokenizer,
+		renderer: thinkRenderer
+	};
+}
+
+export default function () {
+	return {
+		extensions: [detailsExtension(), thinkExtension()]
 	};
 }
