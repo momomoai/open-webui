@@ -205,6 +205,7 @@
 			title={$i18n.t('Thinking...')} 
 			attributes={{ type: 'reasoning', done: 'true' }} 
 			className="w-full space-y-1"
+			open={true}
 		>
 			<div class="mb-1.5" slot="content">
 				<svelte:self id={`${id}-${tokenIdx}-t`} tokens={token.tokens} />
